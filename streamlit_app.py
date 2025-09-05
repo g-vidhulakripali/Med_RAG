@@ -225,22 +225,26 @@ def display_query_result(result):
     
     # Response
     st.markdown("#### 💡 Generated Response")
-    st.markdown(result["response"])
-    
+    response = result.get("response")
+    if response:
+        st.markdown(response)
+    else:
+        st.warning("No response found in result.")
+
     # Metrics
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("Confidence", f"{result['confidence']:.2f}")
-    
+        st.metric("Confidence", f"{result.get('confidence', 0):.2f}")
+
     with col2:
-        st.metric("Sources Used", len(result["sources"]))
-    
+        st.metric("Sources Used", len(result.get("sources", [])))
+
     with col3:
         st.metric("Workflow Steps", result.get("workflow_steps", "N/A"))
     
     # Sources
-    if result["sources"]:
+    if result.get("sources"):
         st.markdown("#### 📚 Source Documents")
         for source in result["sources"]:
             st.info(f"📄 {source}")

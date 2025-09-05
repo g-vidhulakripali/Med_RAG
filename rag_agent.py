@@ -250,33 +250,49 @@ Please provide an improved, more accurate, and comprehensive response:"""
             logger.error(f"Response improvement error: {e}")
         
         return state
-    
+
     def process_query(self, query: str) -> Dict[str, Any]:
         """Process a user query through the complete RAG workflow"""
         try:
             logger.info(f"Processing query: {query}")
-            
+
             # Initialize state
             initial_state = AgentState(query=query)
-            
+
             # Run the workflow
             final_state = self.workflow.invoke(initial_state)
-            
-            # Prepare result
+
+            # If final_state is a dict (LangGraph style)
+            if isinstance(final_state, dict):
+                response = final_state.get("response") or final_state.get("answer") or final_state.get("output")
+                confidence = final_state.get("confidence", 0.0)
+                sources = final_state.get("sources", [])
+                evaluation = final_state.get("evaluation", {})
+                workflow_steps = final_state.get("step", "N/A")
+                error = final_state.get("error")
+            else:
+                # If final_state is a custom object with attributes
+                response = getattr(final_state, "response", None)
+                confidence = getattr(final_state, "confidence", 0.0)
+                sources = getattr(final_state, "sources", [])
+                evaluation = getattr(final_state, "evaluation", {})
+                workflow_steps = getattr(final_state, "step", "N/A")
+                error = getattr(final_state, "error", None)
+
             result = {
                 "success": True,
                 "query": query,
-                "response": final_state.response,
-                "confidence": final_state.confidence,
-                "sources": final_state.sources,
-                "evaluation": final_state.evaluation,
-                "workflow_steps": final_state.step,
-                "error": final_state.error if final_state.error else None
+                "response": response,
+                "confidence": confidence,
+                "sources": sources,
+                "evaluation": evaluation,
+                "workflow_steps": workflow_steps,
+                "error": error,
             }
-            
-            logger.info(f"Query processing completed with confidence: {final_state.confidence}")
+
+            logger.info(f"Query processing completed with confidence: {confidence}")
             return result
-            
+
         except Exception as e:
             logger.error(f"Error in query processing: {e}")
             return {
@@ -284,9 +300,12 @@ Please provide an improved, more accurate, and comprehensive response:"""
                 "query": query,
                 "error": str(e),
                 "response": None,
-                "confidence": 0.0
+                "confidence": 0.0,
+                "sources": [],
+                "evaluation": {},
+                "workflow_steps": "N/A"
             }
-    
+
     def get_system_status(self) -> Dict[str, Any]:
         """Get current system status and health"""
         try:
