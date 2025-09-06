@@ -7,7 +7,7 @@ A sophisticated Retrieval-Augmented Generation (RAG) system built with LangGraph
 This system processes medical PDF documents and provides intelligent, evidence-based responses to queries with the following key features:
 
 - **Agentic Behavior**: Autonomous decision-making using LangGraph workflows
-- **Multi-LLM Support**: Google AI Studio/Gemini (primary) and OpenAI (fallback) integration
+- **Multi-LLM Support**: Google AI Studio/Gemini (primary) and OpenAI (fallback) integration and Ollama Mistral (local fallback)
 - **Intelligent Retrieval**: Advanced document chunking and vector similarity search
 - **Quality Assurance**: Self-evaluation and response improvement mechanisms
 - **Source Citations**: Proper attribution and reference tracking
@@ -39,8 +39,7 @@ This system processes medical PDF documents and provides intelligent, evidence-b
 ### 1. Prerequisites
 
 - Python 3.8+
-- API key from [Google AI Studio](https://makersuite.google.com/app/apikey) (recommended) or [OpenAI](https://platform.openai.com/)
-
+- API key from [Google AI Studio](https://makersuite.google.com/app/apikey) (recommended) or [OpenAI](https://platform.openai.com/) or [Ollama](https://ollama.com/) Installation in the system with Mistral model.
 ### 2. Installation
 
 ```bash
