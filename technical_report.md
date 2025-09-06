@@ -21,7 +21,7 @@ The system follows a modular, layered architecture designed for scalability and 
 
 #### 2.2 Multi-LLM Strategy
 - **Primary**: Google AI Studio/Gemini API (free tier, high quality)
-- **Fallback**: OpenAI API (reliability, consistency)
+- **Fallback**: OpenAI API (reliability, consistency) or Ollama Mistral (local, offline)
 - **Implementation**: Automatic provider switching with retry logic
 - **Benefits**: Redundancy, cost optimization, performance flexibility
 
